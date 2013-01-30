@@ -7,41 +7,40 @@ jQuery的自动完成插件,方便创建input或者boxs类自动完成功能,只
 ##API
 
 * `$(selector).autocomplete(options);`
-    * Sets up autocomplete for input field(s).
-    * `options`: An object literal which defines the settings to use for the autocomplete plugin.
-        * `serviceUrl`: Server side URL that provides results for suggestions. Optional if local lookup data is provided.
-        * `lookup`: Lookup array for the suggestions. It may be array of strings or `suggestion` object literals.
-            * `suggestion`: An object literal with the following format: `{ value: 'string', data: any }`.
+    * 绑定插件到所选input.(可为多个)
+    * `options`: 对于插件行为的逐条定义,等于是settings.
+        * `serviceUrl`: 服务器请求地址,本地数据的设置lookup.
+        * `lookup`:suggestion组成的数组,suggestion可以是字符串数组或对象数组.
+            * `suggestion`: 单体数据字符串或后面这种 `{ 'value': 'string', 'data': 'any'}`
 		* `lookupFilter`: `function (suggestion, query, queryLowerCase) {}` filter function for local lookups. By default it does partial string match (case insensitive).
-        * `onSelect`: `function (suggestion) {}` Callback function invoked when user selects suggestion 
-          from the list. `this` inside callback refers to input HtmlElement.
-        * `minChars`: Minimum number of characters required to trigger autosuggest. Default: `1`.
-        * `maxHeight`: Maximum height of the suggestions container in pixels. Default: `300`.
-        * `deferRequestBy`: Number of miliseconds to defer ajax request. Default: `0`.
-        * `width`: Suggestions container width in pixels, e.g.: 300. Default: `auto`, takes input field width.
-        * `params`: Additional parameters to pass with the request, optional.
+        * `onSelect`: `function (suggestion) {}` 选择suggestions之后的回调函数,this对象和绑定的input关联
+        * `minChars`: 做少显示多少个选项. Default: `1`.
+        * `maxHeight`: suggestions container 的最大像素高度. Default: `300`.
+        * `deferRequestBy`: keyUp之后发起请求的间隔时间. Default: `0`.
+        * `width`: Suggestions 的样式宽度, e.g.: 300. Default:`auto`,默认等于input field 的宽度.
+        * `params`: 额外添加的请求参数,可选属性.
         * `formatResult`: `function (suggestion, currentValue) {}` custom function to 
-          format suggestion entry inside suggestions container, optional. 
+          format suggestion entry inside suggestions container, 可选属性.
         * `delimiter`: String or RegExp, that splits input value and takes last part to as query for suggestions.
           Useful when for example you need to fill list of  coma separated values.
-        * `zIndex`: 'z-index' for suggestions container. Default: `9999`.
-        * `type`: Ajax request type to get suggestions. Default: `GET`.
-        * `noCache`: Boolean value indicating whether to cache suggestion results. Default `true`.
-        * `onSearchStart`: `function (query) {}` called before ajax request. `this` is bound to input element.
-        * `onSearchComplete`: `function (query) {}` called after ajax response is processed. `this` is bound to input element.
-        * `tabDisabled`: Default `false`. Set to true to leave the cursor in the input field after the user tabs to select a suggestion.
-        * `paramName`: Default `query`. The name of the request parameter that contains the query.
-        * `transformResult`: `function(response) {}` called after the result of the query is ready. Converts the result into response.suggestions format.
-		* `autoSelectFirst`: if set to `true`, first item will be selected when showing suggestions. Default value `false`.
-		* `appendTo`: container where suggestions will be appended. Default value `body`. Can be jQuery object, selector or html element. Make sure to set `position: absolute` or `position: relative` for that element.
+        * `zIndex`: 'z-index' 默认 `9999`.
+        * `type`: XHR类型. Default: `GET`.
+        * `noCache`: 设置是否缓存ajax结果的布尔值. 默认 `true`.
+        * `onSearchStart`: `function (query) {}` ajax请求之前被调用,可用于前端验证,(译者注) `this` 被绑定在input上.
+        * `onSearchComplete`: `function (query) {}` 请求成功之后的回调.`this` 被绑定在input上.
+        * `tabDisabled`: 默认`false`. 设置为true的话,用户选择结果之后,鼠标指针会blur,默认行为是focus.
+        * `paramName`: 默认`query`. query词的键名.
+        * `transformResult`: `function(response){}`Ajax请求完成后用于调节response.suggestions的格式.
+		* `autoSelectFirst`: 如果设置为 `true`,将默认选择第一个结果. 默认 `false`.
+		* `appendTo`: suggestions container 被插入的地方.默认是`body`.可以是jQuery对徐昂, 选择器或html元素.确定已经设置`position: absolute` or `position: relative` 在被绑定元素上.
 
-##Usage
+##用例
 
 Html:
 
     <input type="text" name="country" id="autocomplete"/>
 
-Ajax lookup:
+Ajax 请求:
 
     $('#autocomplete').autocomplete({
         serviceUrl: '/autocomplete/countries',
@@ -50,7 +49,7 @@ Ajax lookup:
         }
     });
 
-Local lookup (no ajax):
+本地数据 (no ajax):
 
     var countries = [
        { value: 'Andorra', data: 'AD' },
@@ -65,26 +64,27 @@ Local lookup (no ajax):
         }
     });
 
-##Styling
+##样式
 
-Generated HTML markup for suggestions is displayed bellow. You may style it any way you'd like.
+自带样式是下面这样的,特殊样式请自行修改
 
+html:
     <div class="autocomplete-suggestions">
         <div class="autocomplete-suggestion autocomplete-selected">...</div>
         <div class="autocomplete-suggestion">...</div>
         <div class="autocomplete-suggestion">...</div>
     </div>
 
-Style sample:
+css:
 
     .autocomplete-suggestions { border: 1px solid #999; background: #FFF; overflow: auto; }
     .autocomplete-suggestion { padding: 2px 5px; white-space: nowrap; overflow: hidden; }
     .autocomplete-selected { background: #F0F0F0; }
     .autocomplete-suggestions strong { font-weight: normal; color: #3399FF; }
 
-##Response Format
+##Response 数据结构
 
-Response from the server must be JSON formatted following JavaScript object:
+后台返回数据必须为JSON格式的JS对象.
 
     {
         query: "Unit",
@@ -95,19 +95,16 @@ Response from the server must be JSON formatted following JavaScript object:
         ]
     }
 
-Data can be any value or object. Data object is passed to formatResults function 
-and onSelect callback. Alternatively, if there is no data you can 
-supply just a string array for suggestions:
+数据可以是字符串或对象,会被传入格式化函数formatResults作为onSelect的callback.没有数据的情况下可以做一个默认的假数据作为候补.
 
     {
         query: "Unit",
         suggestions: ["United Arab Emirates", "United Kingdom", "United States"]
     }
 
-## Non standard query/results
+## 不符合标准数据要求的情况
 
-If your ajax service expects the query in a different format, and returns data in a different format than the standard response,
-you can supply the "paramName" and "transformResult" options:
+如果你的ajax服务器需要不同的query结构,返回的数据格式也不符合本插件要求的话,用一下接口修改.
 
     $('#autocomplete').autocomplete({
         paramName: 'searchString',
@@ -119,17 +116,17 @@ you can supply the "paramName" and "transformResult" options:
     })
         
 
-Important: query value must match original value in the input 
-field, otherwise suggestions will not be displayed.
+注意:query必须和插件绑定的input的value相同,不然suggestions的数据不会被显示.
 
-##License
+##协议
 
-Ajax Autocomplete for jQuery is freely distributable under the 
-terms of an MIT-style [license](https://github.com/devbridge/jQuery-Autocomplete/blob/master/dist/license.txt).
+使用类MIT协议的组织或个人可以自由使用本插件,需要留版权信息.
+MIT-style [license](https://github.com/devbridge/jQuery-Autocomplete/blob/master/dist/license.txt).
 
-Copyright notice and permission notice shall be included in all 
-copies or substantial portions of the Software.
-
-##Authors
+##作者
 
 Tomas Kirda / [@tkirda](https://twitter.com/tkirda)
+
+##文档翻译
+
+Tiankui / [@github](https://github.com/Tiankui)
