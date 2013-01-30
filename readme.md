@@ -1,11 +1,8 @@
 #Ajax AutoComplete for jQuery
 
-Ajax Autocomplete for jQuery allows you to easily create 
-autocomplete/autosuggest boxes for text input fields.
+jQuery的自动完成插件,方便创建input或者boxs类自动完成功能,只依赖于jQuery.
 
-Has no dependencies other than jQuery.
-
-The standard jquery.autocomplete.js file is around 2.7KB when minified via Closure Compiler and gzipped.
+压缩过后文件大小只有2.7K(jquery.autocomplete.js)
 
 ##API
 
