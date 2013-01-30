@@ -1,0 +1,222 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Jquery-autocomplete by Tiankui</title>
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="javascripts/respond.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!--[if lt IE 8]>
+    <link rel="stylesheet" href="stylesheets/ie.css">
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+  </head>
+  <body>
+      <div id="header">
+        <nav>
+          <li class="fork"><a href="https://github.com/Tiankui/jQuery-Autocomplete">View On GitHub</a></li>
+          <li class="downloads"><a href="https://github.com/Tiankui/jQuery-Autocomplete/zipball/master">ZIP</a></li>
+          <li class="downloads"><a href="https://github.com/Tiankui/jQuery-Autocomplete/tarball/master">TAR</a></li>
+          <li class="title">DOWNLOADS</li>
+        </nav>
+      </div><!-- end header -->
+
+    <div class="wrapper">
+
+      <section>
+        <div id="title">
+          <h1>Jquery-autocomplete</h1>
+          <p>jQuery-Autocomplete的翻译</p>
+          <hr>
+          <span class="credits left">Project maintained by <a href="https://github.com/Tiankui">Tiankui</a></span>
+          <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="http://twitter.com/#!/michigangraham">mattgraham</a></span>
+        </div>
+
+        <h1>Ajax AutoComplete for jQuery</h1>
+
+<p>jQuery的自动完成插件,方便创建input或者boxs类自动完成功能,只依赖于jQuery.</p>
+
+<p>压缩过后文件大小只有2.7K(jquery.autocomplete.js)</p>
+
+<h2>API</h2>
+
+<ul>
+<li>
+<code>$(selector).autocomplete(options);</code>
+
+<ul>
+<li>绑定插件到所选input.(可为多个)</li>
+<li>
+<code>options</code>: 对于插件行为的逐条定义,等于是settings.
+
+<ul>
+<li>
+<code>serviceUrl</code>: 服务器请求地址,本地数据的设置lookup.</li>
+<li>
+<code>lookup</code>:suggestion组成的数组,suggestion可以是字符串数组或对象数组.
+
+<ul>
+<li>
+<code>suggestion</code>: 单体数据字符串或后面这种 <code>{ 'value': 'string', 'data': 'any'}</code>
+</li>
+</ul>
+</li>
+<li>
+<code>lookupFilter</code>: <code>function (suggestion, query, queryLowerCase) {}</code> 数据为本地时对数据进行过滤的函数.默认只会进行很愚蠢的局部匹配.</li>
+<li>
+<code>onSelect</code>: <code>function (suggestion) {}</code> 选择suggestions之后的回调函数,this对象和绑定的input关联</li>
+<li>
+<code>minChars</code>: 做少显示多少个选项. Default: <code>1</code>.</li>
+<li>
+<code>maxHeight</code>: suggestions container 的最大像素高度. Default: <code>300</code>.</li>
+<li>
+<code>deferRequestBy</code>: keyUp之后发起请求的间隔时间. Default: <code>0</code>.</li>
+<li>
+<code>width</code>: Suggestions 的样式宽度, e.g.: 300. Default:<code>auto</code>,默认等于input field 的宽度.</li>
+<li>
+<code>params</code>: 额外添加的请求参数,可选属性.</li>
+<li>
+<code>formatResult</code>: <code>function (suggestion, currentValue) {}</code> 格式化suggestions container中的suggestion entry, 可选属性.</li>
+<li>
+<code>delimiter</code>: 字符串或者正则,splits字符串并把得出数组的最后一项作为query进行请求.当需要分别对两个或者以上的词汇进行自动完成时很有用.</li>
+<li>
+<code>zIndex</code>: 'z-index' 默认 <code>9999</code>.</li>
+<li>
+<code>type</code>: XHR类型. Default: <code>GET</code>.</li>
+<li>
+<code>noCache</code>: 设置是否缓存ajax结果的布尔值. 默认 <code>true</code>.</li>
+<li>
+<code>onSearchStart</code>: <code>function (query) {}</code> ajax请求之前被调用,可用于前端验证,(译者注) <code>this</code> 被绑定在input上.</li>
+<li>
+<code>onSearchComplete</code>: <code>function (query) {}</code> 请求成功之后的回调.<code>this</code> 被绑定在input上.</li>
+<li>
+<code>tabDisabled</code>: 默认<code>false</code>. 设置为true的话,用户选择结果之后,鼠标指针会blur,默认行为是focus.</li>
+<li>
+<code>paramName</code>: 默认<code>query</code>. query词的键名.</li>
+<li>
+<code>transformResult</code>: <code>function(response){}</code>Ajax请求完成后用于调节response.suggestions的格式.</li>
+<li>
+<code>autoSelectFirst</code>: 如果设置为 <code>true</code>,将默认选择第一个结果. 默认 <code>false</code>.</li>
+<li>
+<code>appendTo</code>: suggestions container 被插入的地方.默认是<code>body</code>.可以是jQuery对徐昂, 选择器或html元素.确定已经设置<code>position: absolute</code> or <code>position: relative</code> 在被绑定元素上.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul><h2>用例</h2>
+
+<p>HTML:</p>
+
+<pre><code>&lt;input type="text" name="country" id="autocomplete"/&gt;
+</code></pre>
+
+<p>Ajax 请求:</p>
+
+<pre><code>$('#autocomplete').autocomplete({
+    serviceUrl: '/autocomplete/countries',
+    onSelect: function (suggestion) {
+        alert('You selected: ' + suggestion.value + ', ' + suggestion.data);
+    }
+});
+</code></pre>
+
+<p>本地数据 (no ajax):</p>
+
+<pre><code>var countries = [
+   { value: 'Andorra', data: 'AD' },
+   // ...
+   { value: 'Zimbabwe', data: 'ZZ' }
+];
+
+$('#autocomplete').autocomplete({
+    lookup: countries,
+    onSelect: function (suggestion) {
+        alert('You selected: ' + suggestion.value + ', ' + suggestion.data);
+    }
+});
+</code></pre>
+
+<h2>样式</h2>
+
+<p>自带样式是下面这样的,特殊样式请自行修改</p>
+
+<p>html:</p>
+
+<pre><code>&lt;div class="autocomplete-suggestions"&gt;
+    &lt;div class="autocomplete-suggestion autocomplete-selected"&gt;...&lt;/div&gt;
+    &lt;div class="autocomplete-suggestion"&gt;...&lt;/div&gt;
+    &lt;div class="autocomplete-suggestion"&gt;...&lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+
+<p>css:</p>
+
+<pre><code>.autocomplete-suggestions { border: 1px solid #999; background: #FFF; overflow: auto; }
+.autocomplete-suggestion { padding: 2px 5px; white-space: nowrap; overflow: hidden; }
+.autocomplete-selected { background: #F0F0F0; }
+.autocomplete-suggestions strong { font-weight: normal; color: #3399FF; }
+</code></pre>
+
+<h2>Response 数据结构</h2>
+
+<p>后台返回数据必须为JSON格式的JS对象.</p>
+
+<pre><code>{
+    query: "Unit",
+    suggestions: [
+        { value: "United Arab Emirates", data: "AE" },
+        { value: "United Kingdom",       data: "UK" },
+        { value: "United States",        data: "US" }
+    ]
+}
+</code></pre>
+
+<p>数据可以是字符串或对象,会被传入格式化函数formatResults作为onSelect的callback.没有数据的情况下可以做一个默认的假数据作为候补.</p>
+
+<pre><code>{
+    query: "Unit",
+    suggestions: ["United Arab Emirates", "United Kingdom", "United States"]
+}
+</code></pre>
+
+<h2>不符合标准数据要求的情况</h2>
+
+<p>如果你的ajax服务器需要不同的query结构,返回的数据格式也不符合本插件要求的话,用一下接口修改.</p>
+
+<pre><code>$('#autocomplete').autocomplete({
+    paramName: 'searchString',
+    transformResult: function(response) {
+        return $.map(response.myData, function(dataItem) {
+            return {value: dataItem.valueField, data: dataItem.dataField};
+        });
+    }
+})
+</code></pre>
+
+<p>注意:query必须和插件绑定的input的value相同,不然suggestions的数据不会被显示.</p>
+
+<h2>协议</h2>
+
+<p>使用类MIT协议的组织或个人可以自由使用本插件,需要留版权信息.
+MIT-style <a href="https://github.com/devbridge/jQuery-Autocomplete/blob/master/dist/license.txt">license</a>.</p>
+
+<h2>作者</h2>
+
+<p>Tomas Kirda / <a href="https://twitter.com/tkirda">@tkirda</a></p>
+
+<h2>文档翻译</h2>
+
+<p>Tiankui / <a href="https://github.com/Tiankui">@github</a></p>
+      </section>
+
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+    
+  </body>
+</html>
