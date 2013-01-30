@@ -68,7 +68,7 @@ Ajax 请求:
 
 html:
 
-    <div class="autocomplete-suggestions">
+	<div class="autocomplete-suggestions">
         <div class="autocomplete-suggestion autocomplete-selected">...</div>
         <div class="autocomplete-suggestion">...</div>
         <div class="autocomplete-suggestion">...</div>
