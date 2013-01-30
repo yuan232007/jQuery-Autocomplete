@@ -36,7 +36,7 @@ jQuery的自动完成插件,方便创建input或者boxs类自动完成功能,只
 
 ##用例
 
-Html:
+HTML:
 
     <input type="text" name="country" id="autocomplete"/>
 
