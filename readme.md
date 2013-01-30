@@ -12,17 +12,15 @@ jQuery的自动完成插件,方便创建input或者boxs类自动完成功能,只
         * `serviceUrl`: 服务器请求地址,本地数据的设置lookup.
         * `lookup`:suggestion组成的数组,suggestion可以是字符串数组或对象数组.
             * `suggestion`: 单体数据字符串或后面这种 `{ 'value': 'string', 'data': 'any'}`
-		* `lookupFilter`: `function (suggestion, query, queryLowerCase) {}` filter function for local lookups. By default it does partial string match (case insensitive).
+		* `lookupFilter`: `function (suggestion, query, queryLowerCase) {}` 数据为本地时对数据进行过滤的函数.默认只会进行很愚蠢的局部匹配.
         * `onSelect`: `function (suggestion) {}` 选择suggestions之后的回调函数,this对象和绑定的input关联
         * `minChars`: 做少显示多少个选项. Default: `1`.
         * `maxHeight`: suggestions container 的最大像素高度. Default: `300`.
         * `deferRequestBy`: keyUp之后发起请求的间隔时间. Default: `0`.
         * `width`: Suggestions 的样式宽度, e.g.: 300. Default:`auto`,默认等于input field 的宽度.
         * `params`: 额外添加的请求参数,可选属性.
-        * `formatResult`: `function (suggestion, currentValue) {}` custom function to 
-          format suggestion entry inside suggestions container, 可选属性.
-        * `delimiter`: String or RegExp, that splits input value and takes last part to as query for suggestions.
-          Useful when for example you need to fill list of  coma separated values.
+        * `formatResult`: `function (suggestion, currentValue) {}` 格式化suggestions container中的suggestion entry, 可选属性.
+        * `delimiter`: 字符串或者正则,splits字符串并把得出数组的最后一项作为query进行请求.当需要分别对两个或者以上的词汇进行自动完成时很有用.
         * `zIndex`: 'z-index' 默认 `9999`.
         * `type`: XHR类型. Default: `GET`.
         * `noCache`: 设置是否缓存ajax结果的布尔值. 默认 `true`.
